@@ -42,3 +42,30 @@ go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
 
 # Python dependencies
 pip3 install jsbeautifier requests rich
+
+
+✅ Setup
+
+
+  git clone https://github.com/Professorzizo/daily_bugbounty.git
+
+
+------------------------------------------------------------------------------
+#Configure Telegram bot
+  Edit daily_bugbounty.py:
+
+  TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN"
+  TELEGRAM_CHAT_ID = "YOUR_CHAT_ID"
+
+------------------------------------------------------------------------------
+#RUN:
+
+python3 daily_bugbounty.py
+
+
+✅ Daily Automation (cron)
+
+crontab -e
+
+0 3 * * * /usr/bin/python3 bugbounty-reports/daily_bugbounty.py >> /home/USER/dailylog.txt 2>&1
+
