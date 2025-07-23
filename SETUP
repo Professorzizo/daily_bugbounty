@@ -1,0 +1,17 @@
+✅ Setup
+
+
+  git clone https://github.com/YOUR_USERNAME/bugbounty-reports.git
+  cd bugbounty-reports
+
+------------------------------------------------------------------------------
+#Configure Telegram bot
+  Edit daily_bugbounty.py:
+
+  TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN"
+  TELEGRAM_CHAT_ID = "YOUR_CHAT_ID"
+
+------------------------------------------------------------------------------
+#RUN:
+
+python3 daily_bugbounty.py
