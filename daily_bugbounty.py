@@ -1,12 +1,12 @@
-import subprocess, os, requests, re, jsbeautifier, random
+import subprocess, os, requests, random
 from datetime import datetime
 
-# === إعدادات Telegram ===
-TELEGRAM_BOT_TOKEN = "7525046599:AAECQzvF9UbK05-sTlXSXaZCUPzAcjKtbAM"
-TELEGRAM_CHAT_ID = "5188067171"
+# === إعدادات Telegram (ضع بياناتك هنا) ===
+TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID"
 
 # === ملفات التحكم ===
-BASE_PATH = "/home/steel8566"
+BASE_PATH = os.getcwd()  # سيستخدم المسار الحالي الذي تشغل منه السكربت
 TARGETS_FILE = f"{BASE_PATH}/targets.txt"
 USED_FILE = f"{BASE_PATH}/used_targets.txt"
 RESULTS_PATH = f"{BASE_PATH}/results"
@@ -14,13 +14,19 @@ DATE = datetime.now().strftime('%Y-%m-%d')
 TODAY_DIR = f"{RESULTS_PATH}/{DATE}"
 os.makedirs(TODAY_DIR, exist_ok=True)
 
-# === إرسال رسالة للتليجرام ===
+# === إرسال رسالة نصية للتليجرام ===
 def send_telegram_message(message):
+    if TELEGRAM_BOT_TOKEN == "YOUR_TELEGRAM_BOT_TOKEN":
+        print("[!] Telegram not configured, skipping message")
+        return
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "text": message})
 
 # === إرسال ملف للتليجرام ===
 def send_telegram_file(file_path, caption=None):
+    if TELEGRAM_BOT_TOKEN == "YOUR_TELEGRAM_BOT_TOKEN":
+        print(f"[!] Telegram not configured, skipping file {file_path}")
+        return
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendDocument"
     with open(file_path, 'rb') as f:
         requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "caption": caption if caption else ""}, files={"document": f})
@@ -35,7 +41,7 @@ def update_hackerone_targets():
     print("🛰️ Fetching HackerOne Programs...")
     url = "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/master/data/hackerone_data.json"
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=30)
         data = response.json()
     except:
         print("❌ Failed to fetch HackerOne data")
